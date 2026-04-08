@@ -34,9 +34,10 @@ export default function DashboardPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#0B0B12", color: "#fff" }}>
-      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.5rem 2rem", borderBottom: "1px solid #333" }}>
-        <Link href="/" style={{ fontSize: "1.3rem", fontWeight: "bold", textDecoration: "none", color: "#fff" }}>
-          🧬 BioTransform
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.5rem 2rem", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
+        <Link href="/" style={{ fontSize: "1.3rem", fontWeight: "bold", textDecoration: "none", color: "#fff", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <span style={{ background: "#14B8A6", color: "#000", width: "32px", height: "32px", borderRadius: "6px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem", fontWeight: "900" }}>✦</span>
+          BioTransform
         </Link>
         <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
           <span>{user?.name || user?.email}</span>
@@ -57,67 +58,53 @@ export default function DashboardPage() {
         </div>
       </nav>
 
-      <main style={{ maxWidth: "1200px", margin: "0 auto", padding: "2rem" }}>
+      <main style={{ maxWidth: "1200px", margin: "0 auto", padding: "3rem 1.5rem" }}>
         <h1 style={{ fontSize: "2rem", fontWeight: "900", marginBottom: "0.5rem" }}>
           Welcome, {user?.name || "User"}!
         </h1>
-        <p style={{ color: "#999", marginBottom: "2rem" }}>Your health optimization dashboard</p>
+        <p style={{ color: "#999", marginBottom: "3rem" }}>Your health optimization dashboard</p>
 
-        <div style={{ background: "#1a1a2e", border: "1px solid #333", borderRadius: "1rem", padding: "2rem", marginBottom: "2rem" }}>
-          <h2 style={{ fontSize: "1.3rem", fontWeight: "900", marginBottom: "1rem" }}>✅ Demo Mode Active</h2>
-          <p style={{ color: "#999", marginBottom: "1rem" }}>
-            You're currently using BioTransform in demo mode. This version showcases the UI and user experience.
+        {/* Quick Actions */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "2rem", marginBottom: "3rem" }}>
+          {/* Upload Card */}
+          <Link href="/upload" style={{ textDecoration: "none", color: "inherit" }}>
+            <div style={{ background: "rgba(26, 26, 46, 0.5)", border: "1px solid rgba(20, 184, 166, 0.2)", borderRadius: "1rem", padding: "2rem", cursor: "pointer", transition: "all 0.2s", hover: { borderColor: "rgba(20, 184, 166, 0.5)" } }}>
+              <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>📄</div>
+              <h3 style={{ fontSize: "1.3rem", fontWeight: "900", marginBottom: "0.5rem", color: "#fff" }}>Upload Results</h3>
+              <p style={{ color: "#999", fontSize: "0.9rem", marginBottom: "1rem" }}>Upload your bloodwork PDFs</p>
+              <div style={{ color: "#14B8A6", fontWeight: "600", fontSize: "0.9rem" }}>Start Analysis →</div>
+            </div>
+          </Link>
+
+          {/* AI Analysis Card */}
+          <div style={{ background: "rgba(26, 26, 46, 0.5)", border: "1px solid rgba(20, 184, 166, 0.2)", borderRadius: "1rem", padding: "2rem" }}>
+            <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>🤖</div>
+            <h3 style={{ fontSize: "1.3rem", fontWeight: "900", marginBottom: "0.5rem", color: "#fff" }}>AI Analysis</h3>
+            <p style={{ color: "#999", fontSize: "0.9rem", marginBottom: "1rem" }}>Get personalized insights</p>
+            <div style={{ color: "#999", fontWeight: "600", fontSize: "0.9rem" }}>Upload to analyze</div>
+          </div>
+
+          {/* Health Plans Card */}
+          <div style={{ background: "rgba(26, 26, 46, 0.5)", border: "1px solid rgba(20, 184, 166, 0.2)", borderRadius: "1rem", padding: "2rem" }}>
+            <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>📋</div>
+            <h3 style={{ fontSize: "1.3rem", fontWeight: "900", marginBottom: "0.5rem", color: "#fff" }}>Health Plans</h3>
+            <p style={{ color: "#999", fontSize: "0.9rem", marginBottom: "1rem" }}>Supplement stacks & training</p>
+            <div style={{ color: "#999", fontWeight: "600", fontSize: "0.9rem" }}>Coming soon</div>
+          </div>
+        </div>
+
+        {/* Info Section */}
+        <div style={{ background: "rgba(20, 184, 166, 0.05)", border: "1px solid rgba(20, 184, 166, 0.2)", borderRadius: "1rem", padding: "2rem" }}>
+          <h2 style={{ fontSize: "1.3rem", fontWeight: "900", marginBottom: "1rem", color: "#fff" }}>✅ Demo Mode Active</h2>
+          <p style={{ color: "#999", marginBottom: "1rem", lineHeight: "1.6" }}>
+            You're currently using BioTransform in demo mode. This version showcases the UI and user experience with AI-powered analysis capabilities.
           </p>
           <ul style={{ color: "#999", marginLeft: "1.5rem", lineHeight: "1.8" }}>
-            <li>✓ Sign in/up with any email and password (min 8 chars)</li>
-            <li>✓ Access the dashboard</li>
-            <li>✓ To enable full functionality: Set up Convex backend + Gemini API</li>
+            <li>✓ Upload bloodwork PDFs</li>
+            <li>✓ AI analyzes 50+ biomarkers</li>
+            <li>✓ Get personalized recommendations</li>
+            <li>✓ Track your health progress</li>
           </ul>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem" }}>
-          {[
-            { icon: "📄", title: "Upload Results", desc: "Upload your bloodwork PDFs" },
-            { icon: "🤖", title: "AI Analysis", desc: "Get personalized insights" },
-            { icon: "📋", title: "Health Plans", desc: "Receive supplement stacks & training" },
-          ].map((feature) => (
-            <div key={feature.title} style={{ background: "#1a1a2e", border: "1px solid #333", borderRadius: "1rem", padding: "1.5rem" }}>
-              <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>{feature.icon}</div>
-              <h3 style={{ fontWeight: "900", marginBottom: "0.5rem" }}>{feature.title}</h3>
-              <p style={{ color: "#999", fontSize: "0.9rem" }}>{feature.desc}</p>
-            </div>
-          ))}
-        </div>
-
-        <div style={{ marginTop: "2rem", display: "flex", gap: "1rem" }}>
-          <Link
-            href="/auth"
-            style={{
-              background: "#14B8A6",
-              color: "#000",
-              padding: "0.75rem 1.5rem",
-              borderRadius: "0.5rem",
-              textDecoration: "none",
-              fontWeight: "bold",
-              display: "inline-block",
-            }}
-          >
-            Try Another Account
-          </Link>
-          <button
-            onClick={handleLogout}
-            style={{
-              background: "#1a1a2e",
-              color: "#fff",
-              padding: "0.75rem 1.5rem",
-              borderRadius: "0.5rem",
-              border: "1px solid #333",
-              cursor: "pointer",
-              fontWeight: "bold",
-            }}
-          >
-            Sign Out
-          </button>
         </div>
       </main>
     </div>
