@@ -1,131 +1,409 @@
-import Link from "next/link";
+"use client";
 
-export default function Home() {
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { fadeUpCustom, EASE_OUT, DURATION_SLOW } from "@/lib/animations";
+
+const fadeUp = fadeUpCustom(0.08, DURATION_SLOW);
+
+const biomarkers = [
+  { name: "Vitamin D", value: "28", unit: "ng/mL", status: "suboptimal" as const },
+  { name: "Testosterone", value: "742", unit: "ng/dL", status: "optimal" as const },
+  { name: "hs-CRP", value: "2.4", unit: "mg/L", status: "suboptimal" as const },
+  { name: "HbA1c", value: "5.1", unit: "%", status: "optimal" as const },
+  { name: "Ferritin", value: "45", unit: "ng/mL", status: "normal" as const },
+  { name: "TSH", value: "3.8", unit: "mIU/L", status: "suboptimal" as const },
+];
+
+const statusColor = {
+  optimal: "text-[var(--status-optimal)]",
+  normal: "text-[var(--status-normal)]",
+  suboptimal: "text-[var(--status-suboptimal)]",
+  critical: "text-[var(--status-critical)]",
+};
+
+const statusDot = {
+  optimal: "bg-[var(--status-optimal)]",
+  normal: "bg-[var(--status-normal)]",
+  suboptimal: "bg-[var(--status-suboptimal)]",
+  critical: "bg-[var(--status-critical)]",
+};
+
+export default function LandingPage() {
   return (
-    <div style={{ minHeight: "100vh", background: "#0B0B12", color: "#fff", fontFamily: "system-ui, -apple-system, sans-serif" }}>
-      {/* Navigation */}
-      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1rem 1.5rem", borderBottom: "1px solid rgba(255,255,255,0.1)", position: "sticky", top: 0, background: "rgba(11, 11, 18, 0.95)", backdropFilter: "blur(10px)", zIndex: 50 }}>
-        <div style={{ fontSize: "1.2rem", fontWeight: "bold", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <span style={{ background: "#14B8A6", color: "#000", width: "28px", height: "28px", borderRadius: "6px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1rem", fontWeight: "900" }}>✦</span>
-          BioTransform
+    <div className="relative min-h-dvh overflow-hidden" style={{ background: "var(--bg-primary)" }}>
+      <div className="pointer-events-none absolute top-[-20%] left-[-10%] h-[600px] w-[600px] rounded-full opacity-20 blur-[120px]" style={{ background: "var(--accent-teal)" }} />
+      <div className="pointer-events-none absolute bottom-[-10%] right-[-10%] h-[500px] w-[500px] rounded-full opacity-10 blur-[100px]" style={{ background: "var(--accent-teal)" }} />
+
+      <nav className="relative z-10 flex items-center justify-between px-6 py-5 md:px-12">
+        <div className="flex items-center gap-2">
+          <div className="h-8 w-8 rounded-lg flex items-center justify-center" style={{ background: "var(--accent-teal)" }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--bg-primary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+            </svg>
+          </div>
+          <span className="text-lg font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--text-primary)" }}>
+            BioTransform
+          </span>
         </div>
-        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-          <Link href="/auth" style={{ color: "#999", textDecoration: "none", fontSize: "0.9rem", transition: "color 0.2s" }}>Sign In</Link>
-          <Link href="/auth" style={{ background: "#14B8A6", color: "#000", padding: "0.5rem 1rem", borderRadius: "0.5rem", textDecoration: "none", fontWeight: "bold", fontSize: "0.9rem", display: "inline-block" }}>Get Started</Link>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/auth"
+            className="text-sm font-medium transition-colors hover:opacity-80"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            Sign In
+          </Link>
+          <Link
+            href="/auth"
+            className="rounded-lg px-5 py-2.5 text-sm font-semibold transition-transform hover:scale-[1.02] active:scale-[0.98]"
+            style={{
+              background: "var(--accent-teal)",
+              color: "var(--bg-primary)",
+            }}
+          >
+            Get Started
+          </Link>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <main style={{ maxWidth: "1400px", margin: "0 auto", padding: "3rem 1.5rem" }}>
-        {/* Badge */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "2rem", width: "fit-content" }}>
-          <span style={{ background: "rgba(20, 184, 166, 0.2)", color: "#14B8A6", padding: "0.4rem 0.8rem", borderRadius: "999px", fontSize: "0.8rem", fontWeight: "600", border: "1px solid rgba(20, 184, 166, 0.3)" }}>● AI-Powered Health Analysis</span>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "center", marginBottom: "6rem" }}>
-          {/* Left Column */}
+      <main id="main-content" className="relative z-10 mx-auto max-w-6xl px-6 pt-20 pb-32 md:px-12 md:pt-32">
+        <div className="grid gap-16 lg:grid-cols-2 lg:gap-20 items-center">
           <div>
-            <h1 style={{ fontSize: "clamp(2rem, 8vw, 4rem)", fontWeight: "900", marginBottom: "1.5rem", lineHeight: "1.1", letterSpacing: "-0.02em" }}>
-              Decode your <span style={{ color: "#14B8A6" }}>bloodwork.</span><br />
-              Optimize your <span style={{ color: "#14B8A6" }}>biology.</span>
-            </h1>
-            <p style={{ fontSize: "1rem", color: "#999", marginBottom: "2rem", lineHeight: "1.7", maxWidth: "500px" }}>
-              Upload your lab results. Our AI analyzes 50+ biomarkers against functional optimal ranges — not just "normal" — and builds your personalized supplement stack, nutrition plan, and training program.
-            </p>
-            <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginBottom: "2rem", flexWrap: "wrap" }}>
-              <Link href="/auth" style={{ background: "#14B8A6", color: "#000", padding: "0.75rem 1.5rem", borderRadius: "0.5rem", textDecoration: "none", fontWeight: "bold", display: "inline-flex", alignItems: "center", gap: "0.5rem", transition: "transform 0.2s" }}>
-                Start Free Analysis →
-              </Link>
-              <span style={{ color: "#666", fontSize: "0.9rem" }}>No credit card required</span>
-            </div>
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              custom={0}
+              variants={fadeUp}
+              className="mb-4 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium"
+              style={{
+                borderColor: "var(--border-medium)",
+                color: "var(--accent-teal)",
+                background: "var(--accent-teal-glow)",
+              }}
+            >
+              <span className="h-1.5 w-1.5 rounded-full animate-pulse" style={{ background: "var(--accent-teal)" }} />
+              AI-Powered Health Analysis
+            </motion.div>
 
-            {/* Stats */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem", marginTop: "3rem" }}>
+            <motion.h1
+              initial="hidden"
+              animate="visible"
+              custom={1}
+              variants={fadeUp}
+              className="text-4xl font-black leading-[1.08] text-balance md:text-6xl"
+              style={{ fontFamily: "var(--font-display)", color: "var(--text-primary)" }}
+            >
+              Decode your
+              <br />
+              <span style={{ color: "var(--accent-teal)" }}>bloodwork.</span>
+              <br />
+              Optimize your
+              <br />
+              biology.
+            </motion.h1>
+
+            <motion.p
+              initial="hidden"
+              animate="visible"
+              custom={2}
+              variants={fadeUp}
+              className="mt-6 max-w-md text-base leading-relaxed md:text-lg"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              Upload your lab results. Our AI analyzes 50+ biomarkers against
+              functional optimal ranges — not just &quot;normal&quot; — and builds your
+              personalized supplement stack, nutrition plan, and training program.
+            </motion.p>
+
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              custom={3}
+              variants={fadeUp}
+              className="mt-8 flex items-center gap-4"
+            >
+              <Link
+                href="/auth"
+                className="group relative rounded-xl px-7 py-3.5 text-sm font-bold transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                style={{
+                  background: "var(--accent-teal)",
+                  color: "var(--bg-primary)",
+                }}
+              >
+                Start Free Analysis
+                <span className="ml-2 inline-block transition-transform group-hover:translate-x-0.5">→</span>
+              </Link>
+              <span className="text-xs" style={{ color: "var(--text-muted)" }}>
+                No credit card required
+              </span>
+            </motion.div>
+
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              custom={4}
+              variants={fadeUp}
+              className="mt-12 flex items-center gap-8"
+            >
               {[
-                { num: "50+", label: "Biomarkers Analyzed" },
-                { num: "Functional", label: "Optimal Ranges" },
-                { num: "90 days", label: "Recommended Cadence" },
+                { label: "Biomarkers Analyzed", value: "50+" },
+                { label: "Optimal Ranges", value: "Functional" },
+                { label: "Recommended Cadence", value: "90 days" },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <div style={{ fontSize: "1.5rem", fontWeight: "900", color: "#14B8A6", marginBottom: "0.25rem" }}>{stat.num}</div>
-                  <div style={{ fontSize: "0.85rem", color: "#666" }}>{stat.label}</div>
+                  <div className="text-lg font-bold tabular-nums" style={{ fontFamily: "var(--font-display)", color: "var(--text-primary)" }}>
+                    {stat.value}
+                  </div>
+                  <div className="text-xs" style={{ color: "var(--text-tertiary)" }}>
+                    {stat.label}
+                  </div>
                 </div>
               ))}
-            </div>
+            </motion.div>
           </div>
 
-          {/* Right Column - Biomarker Card */}
-          <div style={{ background: "rgba(26, 26, 46, 0.5)", border: "1px solid rgba(20, 184, 166, 0.2)", borderRadius: "1rem", padding: "2rem", backdropFilter: "blur(10px)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-              <h3 style={{ fontSize: "1rem", fontWeight: "600", color: "#fff", margin: 0 }}>Biomarker Overview</h3>
-              <span style={{ background: "rgba(20, 184, 166, 0.1)", color: "#14B8A6", padding: "0.3rem 0.8rem", borderRadius: "999px", fontSize: "0.75rem", fontWeight: "600" }}>6 markers</span>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.5rem" }}>
-              {[
-                { name: "Vitamin D", value: "28", unit: "ng/mL", status: "warning" },
-                { name: "Testosterone", value: "742", unit: "ng/dL", status: "optimal" },
-                { name: "hs-CRP", value: "2.4", unit: "mg/L", status: "warning" },
-                { name: "HbA1c", value: "5.1", unit: "%", status: "optimal" },
-                { name: "Ferritin", value: "45", unit: "ng/mL", status: "optimal" },
-                { name: "TSH", value: "3.8", unit: "mIU/L", status: "warning" },
-              ].map((item) => (
-                <div key={item.name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "1rem", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                    <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: item.status === "optimal" ? "#14B8A6" : "#F59E0B" }}></span>
-                    <span style={{ fontSize: "0.9rem" }}>{item.name}</span>
+          <motion.div
+            initial={{ opacity: 0, x: 40, rotateY: -5 }}
+            animate={{ opacity: 1, x: 0, rotateY: 0 }}
+            transition={{ delay: 0.2, duration: 0.5, ease: EASE_OUT }}
+            className="relative"
+          >
+            <div
+              className="rounded-2xl border p-6 backdrop-blur-sm"
+              style={{
+                background: "var(--bg-card)",
+                borderColor: "var(--border-subtle)",
+              }}
+            >
+              <div className="mb-4 flex items-center justify-between">
+                <div>
+                  <div className="text-sm font-semibold" style={{ fontFamily: "var(--font-display)", color: "var(--text-primary)" }}>
+                    Biomarker Overview
                   </div>
-                  <span style={{ color: item.status === "optimal" ? "#14B8A6" : "#F59E0B", fontWeight: "600", fontSize: "0.9rem" }}>{item.value}{item.unit}</span>
+                  <div className="text-xs" style={{ color: "var(--text-tertiary)" }}>
+                    Latest blood panel results
+                  </div>
                 </div>
-              ))}
+                <div
+                  className="rounded-lg px-3 py-1 text-xs font-medium"
+                  style={{
+                    background: "var(--accent-teal-glow)",
+                    color: "var(--accent-teal)",
+                  }}
+                >
+                  6 markers
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {biomarkers.map((bm, i) => (
+                  <motion.div
+                    key={bm.name}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 + i * 0.06, duration: 0.25, ease: EASE_OUT }}
+                    className="flex items-center justify-between rounded-xl border px-4 py-3"
+                    style={{
+                      borderColor: "var(--border-subtle)",
+                      background: "var(--bg-secondary)",
+                    }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`h-2 w-2 rounded-full ${statusDot[bm.status]}`} />
+                      <span className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>
+                        {bm.name}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className={`text-sm font-bold tabular-nums ${statusColor[bm.status]}`}>
+                        {bm.value}
+                      </span>
+                      <span className="text-xs" style={{ color: "var(--text-muted)" }}>
+                        {bm.unit}
+                      </span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="mt-4 flex items-center justify-between border-t pt-4" style={{ borderColor: "var(--border-subtle)" }}>
+                <div className="text-xs" style={{ color: "var(--text-tertiary)" }}>
+                  3 markers need attention
+                </div>
+                <div
+                  className="text-xs font-medium"
+                  style={{ color: "var(--accent-teal)" }}
+                >
+                  View full analysis →
+                </div>
+              </div>
             </div>
-            <div style={{ background: "rgba(20, 184, 166, 0.1)", border: "1px solid rgba(20, 184, 166, 0.2)", borderRadius: "0.75rem", padding: "1rem" }}>
-              <div style={{ fontSize: "0.85rem", color: "#999", marginBottom: "0.5rem" }}>Recommended</div>
-              <div style={{ fontWeight: "600", color: "#14B8A6", fontSize: "0.95rem" }}>Vitamin D3 + K2</div>
-              <div style={{ fontSize: "0.85rem", color: "#666", marginTop: "0.25rem" }}>5000 IU / morning</div>
-            </div>
-            <Link href="/auth" style={{ display: "block", textAlign: "center", marginTop: "1rem", color: "#14B8A6", textDecoration: "none", fontSize: "0.9rem", fontWeight: "600" }}>
-              View full analysis →
-            </Link>
-          </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.3, ease: EASE_OUT }}
+              className="absolute -bottom-6 -left-6 rounded-xl border p-4 backdrop-blur-md"
+              style={{
+                background: "rgba(22, 22, 42, 0.9)",
+                borderColor: "var(--border-subtle)",
+              }}
+            >
+              <div className="text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
+                Recommended
+              </div>
+              <div className="mt-1 text-sm font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--text-primary)" }}>
+                Vitamin D3 + K2
+              </div>
+              <div className="text-xs" style={{ color: "var(--accent-teal)" }}>
+                5000 IU / morning
+              </div>
+            </motion.div>
+          </motion.div>
         </div>
 
-        {/* How it works */}
-        <section style={{ marginBottom: "6rem" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 5vw, 2.5rem)", fontWeight: "900", textAlign: "center", marginBottom: "3rem", letterSpacing: "-0.02em" }}>
-            From raw data to <span style={{ color: "#14B8A6" }}>actionable protocol</span>
-          </h2>
-          <p style={{ textAlign: "center", color: "#666", marginBottom: "3rem", fontSize: "1rem" }}>Three steps. Upload once every 90 days. Track your regression toward optimal health.</p>
-          
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem" }}>
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="mt-32"
+        >
+          <motion.div custom={0} variants={fadeUp} className="text-center mb-16">
+            <h2
+              className="text-3xl font-black text-balance md:text-4xl"
+              style={{ fontFamily: "var(--font-display)", color: "var(--text-primary)" }}
+            >
+              From raw data to{" "}
+              <span style={{ color: "var(--accent-teal)" }}>actionable protocol</span>
+            </h2>
+            <p className="mt-4 mx-auto max-w-lg text-base" style={{ color: "var(--text-secondary)" }}>
+              Three steps. Upload once every 90 days. Track your regression toward optimal health.
+            </p>
+          </motion.div>
+
+          <div className="grid gap-6 md:grid-cols-3">
             {[
-              { step: "01", title: "Upload", desc: "Drop your bloodwork PDF. Our AI reads Quest, LabCorp, and 100+ lab formats." },
-              { step: "02", title: "Analyze", desc: "50+ biomarkers mapped to functional optimal ranges. Risk areas identified. Correlations found." },
-              { step: "03", title: "Optimize", desc: "Personalized supplement stack, nutrition framework, and training program built for your biology." },
-            ].map((item) => (
-              <div key={item.step} style={{ background: "rgba(26, 26, 46, 0.5)", border: "1px solid rgba(20, 184, 166, 0.1)", borderRadius: "1rem", padding: "2rem" }}>
-                <div style={{ fontSize: "0.85rem", color: "#14B8A6", fontWeight: "600", marginBottom: "1rem" }}>Step {item.step}</div>
-                <h3 style={{ fontSize: "1.3rem", fontWeight: "900", marginBottom: "1rem", color: "#fff" }}>{item.title}</h3>
-                <p style={{ color: "#999", fontSize: "0.95rem", lineHeight: "1.6" }}>{item.desc}</p>
-              </div>
+              {
+                step: "01",
+                title: "Upload",
+                desc: "Drop your bloodwork PDF. Our AI reads Quest, LabCorp, and 100+ lab formats.",
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                ),
+              },
+              {
+                step: "02",
+                title: "Analyze",
+                desc: "50+ biomarkers mapped to functional optimal ranges. Risk areas identified. Correlations found.",
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                  </svg>
+                ),
+              },
+              {
+                step: "03",
+                title: "Optimize",
+                desc: "Personalized supplement stack, nutrition framework, and training program built for your biology.",
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                    <polyline points="16 7 22 7 22 13" />
+                  </svg>
+                ),
+              },
+            ].map((feature, i) => (
+              <motion.div
+                key={feature.step}
+                custom={i + 1}
+                variants={fadeUp}
+                className="group relative rounded-2xl border p-8 transition-colors"
+                style={{
+                  background: "var(--bg-card)",
+                  borderColor: "var(--border-subtle)",
+                }}
+              >
+                <div
+                  className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl"
+                  style={{
+                    background: "var(--accent-teal-glow)",
+                    color: "var(--accent-teal)",
+                  }}
+                >
+                  {feature.icon}
+                </div>
+                <div
+                  className="text-xs font-bold uppercase mb-2"
+                  style={{ color: "var(--accent-teal)" }}
+                >
+                  Step {feature.step}
+                </div>
+                <h3
+                  className="text-xl font-bold mb-3"
+                  style={{ fontFamily: "var(--font-display)", color: "var(--text-primary)" }}
+                >
+                  {feature.title}
+                </h3>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                  {feature.desc}
+                </p>
+              </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
-        {/* Final CTA */}
-        <section style={{ background: "rgba(20, 184, 166, 0.05)", border: "1px solid rgba(20, 184, 166, 0.2)", borderRadius: "1rem", padding: "3rem 2rem", textAlign: "center", marginBottom: "3rem" }}>
-          <h2 style={{ fontSize: "clamp(1.5rem, 5vw, 2.5rem)", fontWeight: "900", marginBottom: "1rem", letterSpacing: "-0.02em" }}>Stop guessing. Start optimizing.</h2>
-          <p style={{ color: "#999", marginBottom: "2rem", fontSize: "1rem", maxWidth: "600px", margin: "0 auto 2rem" }}>Your bloodwork holds the answers. We just make them readable — and actionable.</p>
-          <Link href="/auth" style={{ background: "#14B8A6", color: "#000", padding: "0.75rem 2rem", borderRadius: "0.5rem", textDecoration: "none", fontWeight: "bold", display: "inline-block", fontSize: "1rem" }}>
-            Upload Your First Test →
-          </Link>
-        </section>
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="mt-32 text-center"
+        >
+          <motion.div
+            custom={0}
+            variants={fadeUp}
+            className="rounded-3xl border p-12 md:p-16"
+            style={{
+              background: "var(--bg-card)",
+              borderColor: "var(--border-subtle)",
+            }}
+          >
+            <h2
+              className="text-3xl font-black text-balance md:text-4xl"
+              style={{ fontFamily: "var(--font-display)", color: "var(--text-primary)" }}
+            >
+              Stop guessing. Start optimizing.
+            </h2>
+            <p className="mt-4 mx-auto max-w-md text-base" style={{ color: "var(--text-secondary)" }}>
+              Your bloodwork holds the answers. We just make them readable — and actionable.
+            </p>
+            <Link
+              href="/auth"
+              className="mt-8 inline-block rounded-xl px-8 py-4 text-sm font-bold transition-transform hover:scale-[1.02] active:scale-[0.98]"
+              style={{
+                background: "var(--accent-teal)",
+                color: "var(--bg-primary)",
+              }}
+            >
+              Upload Your First Test →
+            </Link>
+          </motion.div>
+        </motion.section>
+
+        <footer className="mt-20 flex items-center justify-between border-t py-8" style={{ borderColor: "var(--border-subtle)" }}>
+          <div className="text-xs" style={{ color: "var(--text-muted)" }}>
+            © 2026 BioTransform. Not medical advice.
+          </div>
+          <div className="flex gap-6 text-xs" style={{ color: "var(--text-tertiary)" }}>
+            <Link href="/settings" className="hover:opacity-80 transition-opacity">Privacy</Link>
+            <Link href="/settings" className="hover:opacity-80 transition-opacity">Terms</Link>
+          </div>
+        </footer>
       </main>
-
-      {/* Footer */}
-      <footer style={{ borderTop: "1px solid rgba(255,255,255,0.1)", padding: "2rem 1.5rem", textAlign: "center", color: "#666", display: "flex", justifyContent: "center", gap: "2rem", flexWrap: "wrap" }}>
-        <Link href="#" style={{ color: "#666", textDecoration: "none", fontSize: "0.9rem" }}>Privacy</Link>
-        <Link href="#" style={{ color: "#666", textDecoration: "none", fontSize: "0.9rem" }}>Terms</Link>
-      </footer>
     </div>
   );
 }

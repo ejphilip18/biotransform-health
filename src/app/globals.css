@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap");
+}
+
+:root {
+  /* Z-index scale: 10 base, 50 nav, 100 modal, 500 toast */
+  --z-base: 10;
+  --z-nav: 50;
+  --z-modal: 100;
+  --z-toast: 500;
+  --z-skip: 9999;
+
+  --bg-primary: #0B0B12;
+  --bg-secondary: #12121E;
+  --bg-tertiary: #1A1A2E;
+  --bg-card: #16162A;
+  --bg-card-hover: #1E1E38;
+
+  --text-primary: #F0F0F5;
+  --text-secondary: #A0A0B8;
+  --text-tertiary: #6B6B80;
+  --text-muted: #4A4A5C;
+
+  --accent-teal: #00F0B5;
+  --accent-teal-dim: #00C896;
+  --accent-teal-glow: rgba(0, 240, 181, 0.15);
+
+  --status-optimal: #22C55E;
+  --status-normal: #3B82F6;
+  --status-suboptimal: #F59E0B;
+  --status-critical: #EF4444;
+
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-medium: rgba(255, 255, 255, 0.1);
+
+  --font-display: "Satoshi", system-ui, sans-serif;
+  --font-body: "Instrument Sans", system-ui, sans-serif;
+
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-tertiary: var(--bg-tertiary);
+  --color-bg-card: var(--bg-card);
+  --color-bg-card-hover: var(--bg-card-hover);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-text-muted: var(--text-muted);
+  --color-accent-teal: var(--accent-teal);
+  --color-accent-teal-dim: var(--accent-teal-dim);
+  --color-accent-teal-glow: var(--accent-teal-glow);
+  --color-status-optimal: var(--status-optimal);
+  --color-status-normal: var(--status-normal);
+  --color-status-suboptimal: var(--status-suboptimal);
+  --color-status-critical: var(--status-critical);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-medium: var(--border-medium);
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  text-wrap: pretty;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+::selection {
+  background: rgba(0, 240, 181, 0.2);
+  color: var(--text-primary);
+}
+
+/* Skip link — visually hidden until focus */
+.skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+#main-content {
+  scroll-margin-top: 1rem;
+}
+
+.skip-link:focus-visible {
+  position: fixed;
+  width: auto;
+  height: auto;
+  padding: 12px 16px;
+  margin: 0;
+  clip: auto;
+  top: 16px;
+  left: 16px;
+  z-index: var(--z-skip);
+  background: var(--accent-teal);
+  color: var(--bg-primary);
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 0 0 2px var(--bg-primary);
+}
+
+/* Focus visible — never outline-none without replacement */
+:focus-visible {
+  outline: 2px solid var(--accent-teal);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

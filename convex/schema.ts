@@ -269,16 +269,4 @@ export default defineSchema({
     .index("by_userId", ["userId"])
     .index("by_actorId", ["actorId"])
     .index("by_timestamp", ["timestamp"]),
-
-  passwordResetTokens: defineTable({
-    userId: v.id("users"),
-    email: v.string(),
-    token: v.string(),
-    expiresAt: v.float64(),
-    createdAt: v.float64(),
-    used: v.boolean(),
-  })
-    .index("by_token", ["token"])
-    .index("by_userId", ["userId"])
-    .index("by_email", ["email"]),
 });
